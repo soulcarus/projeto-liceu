@@ -1,0 +1,118 @@
+{% extends 'estudantes/base.html' %}
+
+{% block body %}
+
+<h3 class="m-4">Todos os Estudantes</h3>
+            <div class="row">
+                <div class="col-12">
+                    {% if estudantes %}
+                        <div class="card text-white bg-success ms-4 me-4 mb-4">
+                            <div class="card-header">
+                                <i class="fa-solid fa-list fa-lg"></i> Estudantes
+                            </div>
+                            <div class="card-body">
+                            <p class="card-text">
+                            <div class="table-responsive">
+                                <table class="table table-hover text-white">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">Numero do Estudante</th>
+                                        <th scope="col">Primeiro Nome</th>
+                                        <th scope="col">Segundo Nome</th>
+                                        <th scope="col">Email</th>
+                                        <th scope="col">Curso</th>
+                                        <th scope="col">Média</th>
+                                        <th scope="col">Ações</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for estudante in estudantes %}
+                                            <tr>
+                                                <td> {{ estudante.numero_estudante }} </td>
+                                                <td> {{ estudante.primeiro_nome}} </td>
+                                                <td> {{ estudante.segundo_nome}} </td>
+                                                <td> {{ estudante.email}} </td>
+                                                <td> {{ estudante.curso}} </td>
+                                                <td> {{ estudante.media}} </td>
+                                                <td>
+                                                    <button type="button" class="btn btn-info me-1" href="{% url 'ver_estudante' estudante.id %}" data-bs-toggle="modal" data-bs-target="#myModal{{estudante.id}}">
+                                                        <i class="fa-regular fa-circle-question fa-lg"></i>
+                                                    </button>
+                                                <!--MODAL - VER ESTUDANTE-->
+                                                <div class="modal" id="myModal{{estudante.id}}" tabindex="-1" aria-labelledby="myModalLabel1" aria-hidden="true">
+                                                    <div class="modal-dialog" role="document">
+                                                      <div class="modal-content">
+                                                        <div class="modal-header">
+                                                          <h5 class="modal-title">
+                                                            Estudante: {{ estudante.primeiro_nome }} {{ estudante.segundo_nome }}
+                                                          </h5>
+                                                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true"></span>
+                                                          </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                          <ul class="list-unstyled">
+                                                            <li>Numero do Estudante: <strong>{{ estudante.numero_estudante }}</strong></li>
+                                                            <li>Primeiro Nome: <strong> {{ estudante.primeiro_nome }}</strong> </li>
+                                                            <li>Segundo Nome: <strong> {{ estudante.segundo_nome }} </strong></li>
+                                                            <li>Email: <strong> {{ estudante.email }} </strong> </li>
+                                                            <li>Curso: <strong> {{ estudante.curso }} </strong></li>
+                                                            <li>Media: <strong> {{ estudante.media}} </strong> </li>
+                                                          </ul>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                  <a href="{% url 'editar' estudante.id %}" class="btn btn-warning me-1">
+                                                    <i class="fa-solid fa-pen-to-square fa-lg"></i>
+                                                  </a>
+                                                  <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete{{ estudante.id }}">
+                                                    <i class="fa-solid fa-trash fa-lg"></i>
+                                                  </button>
+
+                                                  <!-- Componente Modal - Deletar Aluno -->
+
+                                                  <div class="modal" id="delete{{ estudante.id }}" tabindex="-1" aria-labelledby="myModalLabel2" aria-hidden="true">
+                                                    <div class="modal-dialog" role="document">
+                                                      <div class="modal-content">
+                                                        <div class="modal-header">
+                                                          <h5 class="modal-title">
+                                                            Estudante: {{ estudante.primeiro_nome }} {{ estudante.segundo_nome }}
+                                                          </h5>
+                                                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true"></span>
+                                                          </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                          <p>Voce tem certeza que quer deletar esse usuario?</p>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                          <form action="{% url 'deletar' estudante.id %}" method="POST">
+                                                            {% csrf_token %}
+                                                            <input type="submit" class="btn btn-primary" value="deletar">
+                                                          </form>
+                                                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                                  </div>
+
+
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </p>
+                            </div>
+                        </div>
+                    {% else %}
+                        <h5 class="alert alert-primary ms-4 me-4">Sem estudantes</h5>
+                    {% endif %}
+                </div>
+            </div>
+{% endblock %}

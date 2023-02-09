@@ -1,0 +1,30 @@
+{% extends 'estudantes/base.html' %}
+
+{% block body %}
+    <h3 class="text-center m-4">Adicionar Estudante</h3>
+    {%  if sucesso %}
+    <div class="alert alert-sucess" role="alert">
+        O novo estudante foi adicionado com Sucesso!
+        <a href="{% url 'index' %}" class="alert-link">Ir a pagina principal</a>
+    </div>
+    {% else %}
+        <div class="row justify-content-center">
+            <div class="col-6">
+                <div class="card text-white bg-secondary mb-3">
+                    <div class="card-header">
+                        <i class="fa-solid fa-address-card fa-lg"></i> Matricula do Aluno
+                    </div>
+                    <div class="card-body">
+                        <form action="{% url 'adicionar' %}" method="POST">
+                            {% csrf_token %}
+                            {{ form.as_p }}
+                            <button type="submit" class="btn btn-primary">Adicionar</button>
+                            <a href="{% url 'index' %}" class="btn btn-secondary">Cancelar</a>
+                        </form>
+                    </div>
+                  </div>
+            </div>
+        </div>
+    {% endif %}
+
+{% endblock %}
